@@ -4,6 +4,8 @@ import "./globals.css";
 import React from "react";
 import Navbar from "@/app/components/navbar/Navbar";
 import Footer from "@/app/components/footer/Footer";
+import CartProvider from "@/provider/CartProvider";
+import {Toaster} from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,6 +31,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <Toaster
+          position="bottom-right"
+          reverseOrder={false}
+      />
+      <CartProvider>
         <div className='flex flex-col min-h-screen'>
           <Navbar/>
           <main className='grow bg-customWhite'>
@@ -36,6 +43,7 @@ export default function RootLayout({
           </main>
           <Footer/>
         </div>
+      </CartProvider>
       </body>
     </html>
   );

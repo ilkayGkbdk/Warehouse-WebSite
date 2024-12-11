@@ -1,15 +1,15 @@
 import Header from "@/app/components/general/Header";
-import {warehouses} from "@/utils/Warehouses";
-import WarehouseCard from "@/app/components/home/WarehouseCard";
+import {products} from "@/utils/Products";
+import ProductCard from "@/app/components/home/ProductCard";
 
-const Warehouses = () => {
+const Products = () => {
     return (
         <div>
             <Header text='Tüm Depolar' center bold/>
             <div className='flex items-center flex-wrap gap-3 md:gap-10 md:my-10 px-3 md:px-10'>
                 {
-                    warehouses.map(warehouse => (
-                        <WarehouseCard warehouse={warehouse} key={warehouse.id} />
+                    products.map(product => (
+                        <ProductCard product={product} key={product.id} />
                     ))
                 }
             </div>
@@ -17,4 +17,4 @@ const Warehouses = () => {
     );
 }
 
-export default Warehouses;
+export default Products;

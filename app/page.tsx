@@ -1,9 +1,9 @@
-import Warehouses from "@/app/components/home/Warehouses";
+import Products from "@/app/components/home/Products";
 
 export default function Home() {
   return (
       <div>
-        <Warehouses/>
+        <Products/>
       </div>
   );
 }
