@@ -11,6 +11,8 @@ interface CartContextProps {
     removeFromCart: (product: CardProductProps) => void
     removeCart: () => void
     totalPrice: number | undefined
+    addToBasketIncrease: (product: CardProductProps) => void
+    addToBasketDecrease: (product: CardProductProps) => void
 }
 
 const CartContext = createContext<CartContextProps | null>(null)
@@ -33,8 +35,11 @@ export const CartContextProvider = (props: Props) => {
         const getItem: any = localStorage.getItem('cart');
         const getItemParse: CardProductProps[] | null = JSON.parse(getItem);
         setCartProducts(getItemParse);
-        setTotalPrice(calculateTotalPrice(getItemParse))
     }, []);
+
+    useEffect(() => {
+        setTotalPrice(calculateTotalPrice(cartProducts))
+    }, [cartProducts]);
 
     const addToCart = useCallback((product: CardProductProps) => {
         setCartProducts((prevState) => {
@@ -46,11 +51,11 @@ export const CartContextProvider = (props: Props) => {
                 updatedCart = [product]
             }
 
-            toast.success('Depo sepete eklendi');
             localStorage.setItem('cart', JSON.stringify(updatedCart));
-            setTotalPrice(calculateTotalPrice(updatedCart))
             return updatedCart;
         });
+
+        setTimeout(() => toast.success('Depo sepete eklendi'), 0);
     }, [cartProducts]);
 
     const removeFromCart = useCallback((product: CardProductProps) => {
@@ -60,7 +65,6 @@ export const CartContextProvider = (props: Props) => {
             setCartProducts(filteredProducts);
             toast.success('Depo sepetten kaldırıldı');
             localStorage.setItem('cart', JSON.stringify(filteredProducts));
-            setTotalPrice(calculateTotalPrice(filteredProducts))
         }
     }, [cartProducts]);
 
@@ -69,7 +73,43 @@ export const CartContextProvider = (props: Props) => {
         toast.success('Sepet temizlendi');
         localStorage.setItem('cart', JSON.stringify(null));
         setTotalPrice(0)
-    }, [])
+    }, []);
+
+    const addToBasketIncrease = useCallback((product: CardProductProps) => {
+        let updatedCart;
+        if (product.quantity >= product.maxQuantity) {
+            return toast.error('Daha Fazla Eklenemez...')
+        }
+
+        if (cartProducts) {
+            updatedCart = [...cartProducts];
+            const existingItem = cartProducts?.findIndex(item => item.id === product.id);
+
+            if (existingItem > -1) {
+                updatedCart[existingItem].quantity = ++updatedCart[existingItem].quantity;
+            }
+            setCartProducts(updatedCart);
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
+    }, [cartProducts]);
+
+    const addToBasketDecrease = useCallback((product: CardProductProps) => {
+        let updatedCart;
+        if (product.quantity <= 1) {
+            return toast.error('Daha Az Eklenemez...')
+        }
+
+        if (cartProducts) {
+            updatedCart = [...cartProducts];
+            const existingItem = cartProducts?.findIndex(item => item.id === product.id);
+
+            if (existingItem > -1) {
+                updatedCart[existingItem].quantity = --updatedCart[existingItem].quantity;
+            }
+            setCartProducts(updatedCart);
+            localStorage.setItem('cart', JSON.stringify(updatedCart));
+        }
+    }, [cartProducts]);
 
     const value = {
         cartProducts,
@@ -77,7 +117,9 @@ export const CartContextProvider = (props: Props) => {
         addToCart,
         removeFromCart,
         removeCart,
-        totalPrice
+        totalPrice,
+        addToBasketIncrease,
+        addToBasketDecrease
     }
 
     return (

@@ -4,8 +4,9 @@ export const products = [
         name: "Küçük Depo",
         description: "3x3x3 boyutlarında 27m³'lük, ofis eşyaları için harika bir depo seçeneği. Alımı kolay, kullanımı kolay ve düzeni kolay bir depo. 12 ay kiralamada 2 ay bizden!",
         price: 2000,
+        maxQuantity: 15,
         brand: "Betülkay A.Ş.",
-        category: "Warehouse",
+        category: "Küçük",
         inStock: true,
         image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_SMALL.webp",
         reviews: [
@@ -19,8 +20,9 @@ export const products = [
         name: "Orta Depo",
         description: "Taşınma aşamasındasınız ve eşyaları koymak için bir alana mı ihtiyacınız var? 5x3x5 boyutlarında 75m³'lük, ev ve ofis eşyaları için harika bir depo seçeneği. Koltuk, beyaz eşya, televizyon gibi eşyalarınızda güvenli muhafaza garantisi sunuyor. 12 ay kiralamada 3 ay bizden!",
         price: 7500,
+        maxQuantity: 10,
         brand: "Betülkay A.Ş.",
-        category: "Warehouse",
+        category: "Orta",
         inStock: true,
         image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_MEDIUM.webp",
         reviews: [
@@ -51,8 +53,9 @@ export const products = [
         name: "Büyük Depo",
         description: "Profesyoneller ve büyük iş yapacak olanlar için. 8x5x8 boyutlarında 320m³ devasa bir alan. Sınırlı sayıda stokta bulunur. Küçük bir kamyonet bile koyabilirsiniz. 12 ay kiralamalarda 3 ay bizden!",
         price: 15000,
+        maxQuantity: 5,
         brand: "Betülkay A.Ş.",
-        category: "Warehouse",
+        category: "Büyük",
         inStock: true,
         image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_X-LARGE.webp",
         reviews: [

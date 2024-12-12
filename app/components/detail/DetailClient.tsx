@@ -15,6 +15,7 @@ export type CardProductProps = {
     description: string
     price: number
     quantity: number
+    maxQuantity: number
     imageUrl: string
     inStock: boolean
 }
@@ -30,6 +31,7 @@ const DetailClient = ({product}: {product: any}) => {
         description: product.description,
         price: product.price,
         quantity: 1,
+        maxQuantity: product.maxQuantity,
         imageUrl: product.image,
         inStock: product.inStock
     });

@@ -5,10 +5,11 @@ import PageContainer from "@/app/components/containers/PageContainer";
 import useCart from "@/hooks/useCart";
 import Image from "next/image";
 import Button from "@/app/components/general/Button";
+import Counter from "@/app/components/general/Counter";
 
 const CartClient = () => {
 
-    const { cartProducts, removeFromCart, removeCart, totalPrice } = useCart();
+    const { cartProducts, removeFromCart, removeCart, totalPrice, addToBasketIncrease, addToBasketDecrease } = useCart();
 
     if (!cartProducts || cartProducts.length === 0) {
         return (
@@ -38,7 +39,9 @@ const CartClient = () => {
                                     <Image width={100} height={50} src={product.imageUrl} alt={product.name}/>
                                 </div>
                                 <div className='w-1/5'>{product.name}</div>
-                                <div className='w-1/5'>{product.quantity}</div>
+                                <div className='w-1/5 flex items-center justify-center'>
+                                    <Counter cardProduct={product} increaseFunc={() => addToBasketIncrease(product)} decreaseFunc={() => addToBasketDecrease(product)} />
+                                </div>
                                 <div className='w-1/5 text-green-500 text-lg'>{product.price}₺</div>
                                 <div className='w-1/5'>
                                     <Button text='Satın Alma İptali' onClick={() => removeFromCart(product)} small />

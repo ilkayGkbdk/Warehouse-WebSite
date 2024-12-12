@@ -6,11 +6,11 @@ import Image from "next/image";
 import textClip from "@/utils/TextClip";
 import {Rating} from "@mui/material";
 
-interface WarehouseCardProps {
+interface ProductCardProps {
     product: any
 }
 
-const ProductCard:React.FC<WarehouseCardProps> = ({product}) => {
+const ProductCard:React.FC<ProductCardProps> = ({product}) => {
 
     const router = useRouter();
     const productRating = product?.reviews?.reduce((acc: number, item: any) => acc + item.rating, 0) / product?.reviews?.length;
