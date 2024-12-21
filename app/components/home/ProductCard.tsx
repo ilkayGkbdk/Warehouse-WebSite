@@ -21,7 +21,7 @@ const ProductCard:React.FC<ProductCardProps> = ({product}) => {
                 <div className='font-bold text-lg md:text-2xl text-customWhite'>{textClip(product.name)}</div>
             </div>
             <div className='relative h-[200px]'>
-                <Image src={product.image} fill alt=''/>
+                <Image src={product.image} fill sizes="200" alt=''/>
             </div>
             <div className='text-center mt-2 space-y-1'>
                 <Rating name='read-only' value={productRating} readOnly/>

@@ -8,7 +8,7 @@ export const products = [
         brand: "Betülkay A.Ş.",
         category: "Küçük",
         inStock: true,
-        image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_SMALL.webp",
+        image: process.env.NEXT_PUBLIC_SMALL_WR_IMG,
         reviews: [
             {
                 rating: 4.5
@@ -24,7 +24,7 @@ export const products = [
         brand: "Betülkay A.Ş.",
         category: "Orta",
         inStock: true,
-        image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_MEDIUM.webp",
+        image: process.env.NEXT_PUBLIC_MEDIUM_WR_IMG,
         reviews: [
             {
                 id: "64a65a6158b470c6e06959ee",
@@ -57,7 +57,7 @@ export const products = [
         brand: "Betülkay A.Ş.",
         category: "Büyük",
         inStock: true,
-        image: "https://warespace.com/wp-content/uploads/2023/05/WareSpace_X-LARGE.webp",
+        image: process.env.NEXT_PUBLIC_LARGE_WR_IMG,
         reviews: [
             {
                 id: "6499b4887402b0efd394d8f3",
