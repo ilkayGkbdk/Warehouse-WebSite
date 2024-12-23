@@ -2,7 +2,7 @@
 
 import React from 'react';
 import AdminSidebarItem from "@/app/components/admin/AdminSidebarItem";
-import { MdDashboard, MdCreate, MdOutlineBorderOuter } from "react-icons/md";
+import { MdDashboard, MdCreate, MdOutlineBorderOuter, MdManageSearch } from "react-icons/md";
 import {usePathname} from "next/navigation";
 
 const AdminSidebar = () => {
@@ -21,6 +21,11 @@ const AdminSidebar = () => {
             url: '/admin/create',
         },
         {
+            name: 'Ürünleri Yönet',
+            icon: MdManageSearch,
+            url: '/admin/manage',
+        },
+        {
             name: 'Siparişlerim',
             icon: MdOutlineBorderOuter,
             url: '/admin/orders',
@@ -28,7 +33,7 @@ const AdminSidebar = () => {
     ];
 
     return (
-        <div className='w-1/6 border-r border-r-black h-screen p-4 bg-customBrown'>
+        <div className='w-1/5 border-r border-r-black h-screen p-4 bg-customBrown'>
             <div className='space-y-4'>
                 {
                     adminPanel.map((panel, i) => (

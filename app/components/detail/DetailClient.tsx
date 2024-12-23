@@ -4,10 +4,10 @@ import React, {useEffect, useState} from 'react';
 import PageContainer from "@/app/components/containers/PageContainer";
 import Image from "next/image";
 import Counter from "@/app/components/general/Counter";
-import {products} from "@/utils/Products";
 import Button from "@/app/components/general/Button";
 import {Rating} from "@mui/material";
 import useCart from "@/hooks/useCart";
+import toast from "react-hot-toast";
 
 export type CardProductProps = {
     id: string
@@ -15,7 +15,6 @@ export type CardProductProps = {
     description: string
     price: number
     quantity: number
-    maxQuantity: number
     imageUrl: string
     inStock: boolean
 }
@@ -31,7 +30,6 @@ const DetailClient = ({product}: {product: any}) => {
         description: product.description,
         price: product.price,
         quantity: 1,
-        maxQuantity: product.maxQuantity,
         imageUrl: product.image,
         inStock: product.inStock
     });
@@ -39,7 +37,7 @@ const DetailClient = ({product}: {product: any}) => {
     useEffect(() => {
         setDisplayButton(false);
         const controlDisplay: any = cartProducts?.findIndex((cart) => cart.id === product.id);
-        if (controlDisplay > -1) {
+        if (controlDisplay > -1 ) {
             setDisplayButton(false);
         }
         else {
@@ -48,9 +46,10 @@ const DetailClient = ({product}: {product: any}) => {
     }, [cartProducts]);
 
     const increaseFunc = () => {
-        if (cardProduct.id === products[0].id && cardProduct.quantity === 8) return;
-        if (cardProduct.id === products[1].id && cardProduct.quantity === 5) return;
-        if (cardProduct.id === products[2].id && cardProduct.quantity === 2) return;
+        if (cardProduct.quantity === 5) {
+            toast.error("Daha fazla eklenemez");
+            return;
+        }
         setCardProduct((prevState) => ({ ...prevState, quantity: prevState.quantity + 1 }));
     }
 
@@ -81,12 +80,23 @@ const DetailClient = ({product}: {product: any}) => {
                         </div>
                         <div className='text-customGreen text-opacity-110 text-xl md:text-2xl'>{product?.price} ₺</div>
                         {
-                            displayButton ? <>
-                                <Counter cardProduct={cardProduct} increaseFunc={increaseFunc} decreaseFunc={decreaseFunc}/>
-                                <Button text='Sipariş Oluştur' onClick={() => addToCart(cardProduct)}/>
-                            </> : <>
-                                <Button text='Onay Bekleyen Siparişler Var' disabled onClick={() => addToCart(cardProduct)}/>
-                            </>
+                            product?.inStock ?
+                                <>
+                                    {
+                                        displayButton ?
+                                            <>
+                                                <Counter cardProduct={cardProduct} increaseFunc={increaseFunc} decreaseFunc={decreaseFunc}/>
+                                                <Button text='Sipariş Oluştur' onClick={() => addToCart(cardProduct)}/>
+                                            </> :
+                                            <>
+                                                <Button text='Onay Bekleyen Siparişler Var' disabled onClick={() => addToCart(cardProduct)}/>
+                                            </>
+                                    }
+                                </> :
+                                <>
+                                    <Button text='Stokta Yok' disabled onClick={() => {}}/>
+                                </>
+
                         }
                     </div>
                 </div>

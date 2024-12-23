@@ -6,6 +6,7 @@ import Navbar from "@/app/components/navbar/Navbar";
 import Footer from "@/app/components/footer/Footer";
 import CartProvider from "@/provider/CartProvider";
 import {Toaster} from "react-hot-toast";
+import LoadingProvider from "@/provider/LoadingProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,15 +36,17 @@ export default function RootLayout({
           position="bottom-right"
           reverseOrder={false}
       />
-      <CartProvider>
-        <div className='flex flex-col min-h-screen'>
-          <Navbar/>
-          <main className='grow bg-customWhite'>
-            {children}
-          </main>
-          <Footer/>
-        </div>
-      </CartProvider>
+      <LoadingProvider>
+          <CartProvider>
+              <div className='flex flex-col min-h-screen'>
+                  <Navbar/>
+                  <main className='grow bg-customWhite'>
+                      {children}
+                  </main>
+                  <Footer/>
+              </div>
+          </CartProvider>
+      </LoadingProvider>
       </body>
     </html>
   );

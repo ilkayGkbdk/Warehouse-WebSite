@@ -1,9 +1,9 @@
-import Products from "@/app/components/home/Products";
+import Categories from "@/app/components/home/Categories";
 
 export default function Home() {
   return (
       <div>
-        <Products/>
+        <Categories/>
       </div>
   );
 }

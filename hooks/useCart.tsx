@@ -77,7 +77,7 @@ export const CartContextProvider = (props: Props) => {
 
     const addToBasketIncrease = useCallback((product: CardProductProps) => {
         let updatedCart;
-        if (product.quantity >= product.maxQuantity) {
+        if (product.quantity >= 5) {
             return toast.error('Daha Fazla Eklenemez...')
         }
 

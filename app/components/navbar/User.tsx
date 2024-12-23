@@ -7,6 +7,7 @@ import React, {useState} from "react";
 import { FaRegUser } from "react-icons/fa";
 import {signOut} from "next-auth/react";
 import {useRouter} from "next/navigation";
+import useLoading from "@/hooks/useLoading";
 
 interface UserProps {
     currentUser: User | null | undefined
@@ -16,19 +17,41 @@ const User:React.FC<UserProps> = ({currentUser}) => {
 
     const router = useRouter();
     const [openMenu, setOpenMenu] = useState(false);
+    const { startLoading, stopLoading } = useLoading();
 
-    const menuFunc = (type: string) => {
+    const menuFunc = async (type: string) => {
         setOpenMenu(false);
 
-        if (type === "logout") {
-            signOut({ callbackUrl: "/login" });
-            router.push("/login")
+        try {
+            startLoading();
+            if (type === "logout") {
+                signOut({ callbackUrl: "/login" });
+                router.push("/login")
+            }
+            else if (type === "register") {
+                router.push("/register");
+            }
+            else if (type === "login") {
+                router.push("/login");
+            }
         }
-        else if (type === "register") {
-            router.push("/register");
+        catch (error) {
+            console.error("Yönlendirme hatası: ", error);
         }
-        else if (type === "login") {
-            router.push("/login");
+        finally {
+            stopLoading();
+        }
+
+    }
+
+    const handleNavigation = async () => {
+        try {
+            startLoading();
+            router.push(`/admin`);
+        } catch (error) {
+            console.error("Admin Yönlendirme hatası:", error);
+        } finally {
+            stopLoading();
         }
     }
 
@@ -44,7 +67,7 @@ const User:React.FC<UserProps> = ({currentUser}) => {
                         {
                             currentUser ? (
                                 <div className="space-y-1">
-                                    <div onClick={() => router.push('/admin')} className="text-slate-600 cursor-pointer">Admin</div>
+                                    <div onClick={handleNavigation} className="text-slate-600 cursor-pointer">Admin</div>
                                     <div onClick={() => menuFunc('logout')} className="text-slate-600 cursor-pointer">Logout</div>
                                 </div>
                             ) : (

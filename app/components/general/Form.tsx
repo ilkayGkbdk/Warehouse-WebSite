@@ -5,7 +5,7 @@ import Header from "@/app/components/general/Header";
 import Input from "@/app/components/general/Input";
 import {FieldValues, SubmitHandler, useForm} from "react-hook-form";
 import Checkbox from "@/app/components/general/Checkbox";
-import {TbBoxMultiple1, TbBoxMultiple2, TbBoxMultiple3} from "react-icons/tb";
+import {TbBoxMultiple1, TbBoxMultiple2, TbBoxMultiple3, TbBoxMultiple4} from "react-icons/tb";
 import ChoiceInput from "@/app/components/general/ChoiceInput";
 import Button from "@/app/components/general/Button";
 import axios from "axios";
@@ -34,14 +34,17 @@ const Form = () => {
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         let image: string | undefined = "";
 
-        if (data.category === "Küçük") {
+        if (data.category === "small") {
             image = process.env.NEXT_PUBLIC_SMALL_WR_IMG;
         }
-        else if (data.category === "Orta") {
+        else if (data.category === "medium") {
             image = process.env.NEXT_PUBLIC_MEDIUM_WR_IMG;
         }
-        else if (data.category === "Büyük") {
+        else if (data.category === "large") {
             image = process.env.NEXT_PUBLIC_LARGE_WR_IMG;
+        }
+        else if (data.category === "xlarge") {
+            image = process.env.NEXT_PUBLIC_XLARGE_WR_IMG;
         }
 
         const newData = {...data, image: image};
@@ -65,19 +68,23 @@ const Form = () => {
     };
 
     const categoryList = [
-        { name: "Küçük", icon: TbBoxMultiple1 },
-        { name: "Orta", icon: TbBoxMultiple2 },
-        { name: "Büyük", icon: TbBoxMultiple3 }
-    ]
+        { name: "small", icon: TbBoxMultiple1 },
+        { name: "medium", icon: TbBoxMultiple2 },
+        { name: "large", icon: TbBoxMultiple3 },
+        { name: "xlarge", icon: TbBoxMultiple4 }
+    ];
 
     return (
         <div>
-            <Header text='Ürün Oluştur' center />
-            <Input id='name' type='text' register={register} errors={errors} placeholder='İsim' required  />
-            <Input id='description' type='text' register={register} errors={errors} placeholder='Açıklama' required  />
-            <Input id='brand' type='text' register={register} errors={errors} placeholder='Marka' required  />
-            <Input id='price' type='number' register={register} errors={errors} placeholder='Fiyat' required  />
-            <Checkbox id='inStock' register={register} label='Ürün stokta mevcut mu?' />
+            <Header text='Ürün Oluştur' center/>
+            <Input id='name' type='text' register={register} errors={errors} placeholder='İsim' required/>
+            <Input id='description' type='text' register={register} errors={errors} placeholder='Açıklama' required/>
+            <Input id='brand' type='text' register={register} errors={errors} placeholder='Marka' required/>
+            <Input id='price' type='number' register={register} errors={errors} placeholder='Fiyat' required/>
+            <Input id='palletCount' type='number' register={register} errors={errors} placeholder='Palet Sayısı'
+                   required/>
+            <Checkbox id='inStock' register={register} label='Ürün stokta mevcut mu?'/>
+            <Header text='Kategori' />
             <div className='flex flex-wrap gap-3'>
                 {
                     categoryList.map((cat, index) => (
@@ -91,7 +98,7 @@ const Form = () => {
                     ))
                 }
             </div>
-            <Button text='Ürün Oluştur' onClick={handleSubmit(onSubmit)} />
+            <Button text='Ürün Oluştur' onClick={handleSubmit(onSubmit)}/>
         </div>
     );
 };

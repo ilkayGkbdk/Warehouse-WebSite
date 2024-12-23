@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, description, brand, category, price, inStock, image } = body;
+    const { name, description, brand, category, price, palletCount, inStock, image } = body;
 
     const product = await prisma.product.create({
         data: {
@@ -18,6 +18,7 @@ export async function POST(request: Request) {
             brand,
             category,
             price: parseFloat(price),
+            palletCount: parseInt(palletCount) ,
             inStock,
             image
         }
