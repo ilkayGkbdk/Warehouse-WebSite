@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import {signIn} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import {User} from "@prisma/client";
+import useLoading from "@/hooks/useLoading";
 
 interface RegisterClientProps {
     currentUser: User | null | undefined
@@ -21,24 +22,31 @@ interface RegisterClientProps {
 const RegisterClient:React.FC<RegisterClientProps> = ({currentUser}) => {
 
     const router = useRouter();
-
+    const {startLoading, stopLoading} = useLoading();
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FieldValues>()
+
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        let toastId = toast.loading('Kullanıcı oluşturulurken bekleyin');
+        startLoading();
         axios.post('/api/register', data).then(() => {
-            toast.success('Kullanıcı oluşturuldu');
+            toast.success('Kullanıcı oluşturuldu', {id: toastId});
+
+            toastId = toast.loading('Giriş yapılırken bekleyin');
             signIn('credentials', {
                 email: data.email,
                 password: data.password,
                 redirect: false
             }).then((callback) => {
                 if (callback?.ok) {
+                    stopLoading();
                     router.push('/cart');
                     router.refresh();
-                    toast.success('Giriş Yapıldı')
+                    toast.success('Giriş Yapıldı', {id: toastId});
                 }
 
                 if (callback?.error) {
-                    toast.error(callback.error)
+                    stopLoading();
+                    toast.error(callback.error, {id: toastId});
                 }
             })
         })

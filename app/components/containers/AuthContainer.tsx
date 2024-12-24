@@ -1,8 +1,8 @@
 import React from 'react';
 
-const AuthContainer = ({children}: {children: React.ReactNode}) => {
+const AuthContainer = ({children, center = false}: {children: React.ReactNode, center?: boolean}) => {
     return (
-        <div className='min-h-fit h-full w-full mt-5 md:px-52 flex items-center justify-center'>
+        <div className={`${center ? "min-h-screen" : "min-h-fit"} h-full w-full mt-5 md:px-52 flex items-center justify-center`}>
             {children}
         </div>
     );

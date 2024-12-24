@@ -2,6 +2,7 @@
 
 import {useRouter} from "next/navigation";
 import useLoading from "@/hooks/useLoading";
+import axios from "axios";
 
 const Logo = () => {
     const router = useRouter();
@@ -10,11 +11,12 @@ const Logo = () => {
     const handleNavigation = async () => {
         try {
             startLoading();
-            router.push(`/`);
+            await axios.post('/').then(() => {
+                router.push(`/`);
+                stopLoading();
+            });
         } catch (error) {
             console.error("Yönlendirme hatası:", error);
-        } finally {
-            stopLoading();
         }
     }
 

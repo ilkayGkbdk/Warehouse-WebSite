@@ -8,6 +8,7 @@ import { FaRegUser } from "react-icons/fa";
 import {signOut} from "next-auth/react";
 import {useRouter} from "next/navigation";
 import useLoading from "@/hooks/useLoading";
+import axios from "axios";
 
 interface UserProps {
     currentUser: User | null | undefined
@@ -25,33 +26,34 @@ const User:React.FC<UserProps> = ({currentUser}) => {
         try {
             startLoading();
             if (type === "logout") {
-                signOut({ callbackUrl: "/login" });
-                router.push("/login")
+                await signOut({callbackUrl: "/login"}).then(() => {
+                    router.push("/login");
+                    stopLoading();
+                })
             }
-            else if (type === "register") {
-                router.push("/register");
-            }
-            else if (type === "login") {
-                router.push("/login");
+            else {
+                await axios.post(`/${type}`).then(() => {
+                    router.push(`/${type}`);
+                    stopLoading();
+                    setOpenMenu(false);
+                })
             }
         }
         catch (error) {
             console.error("Yönlendirme hatası: ", error);
         }
-        finally {
-            stopLoading();
-        }
-
     }
 
     const handleNavigation = async () => {
         try {
             startLoading();
-            router.push(`/admin`);
+            await axios.post('/admin').then(() => {
+                setOpenMenu(false);
+                router.push('/admin');
+                stopLoading();
+            });
         } catch (error) {
             console.error("Admin Yönlendirme hatası:", error);
-        } finally {
-            stopLoading();
         }
     }
 

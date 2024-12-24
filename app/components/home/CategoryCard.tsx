@@ -6,6 +6,7 @@ import Image from "next/image";
 import textClip from "@/utils/TextClip";
 import {Rating} from "@mui/material";
 import useLoading from "@/hooks/useLoading";
+import axios from "axios";
 
 interface CategoryCardProps {
     category: any
@@ -20,11 +21,12 @@ const CategoryCard:React.FC<CategoryCardProps> = ({category}) => {
     const handleNavigation = async () => {
         try {
             startLoading();
-            router.push(`/categories/${category.category}`);
+            await axios.post(`/categories/${category.category}`).then(() => {
+                router.push(`/categories/${category.category}`);
+                stopLoading();
+            });
         } catch (error) {
             console.error("Yönlendirme hatası:", error);
-        } finally {
-            stopLoading();
         }
     }
 

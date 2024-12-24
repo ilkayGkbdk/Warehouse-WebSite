@@ -20,9 +20,10 @@ interface LoginClientProps {
 const LoginClient:React.FC<LoginClientProps> = ({currentUser}) => {
 
     const router = useRouter();
-
     const { register, handleSubmit, watch, formState: { errors } } = useForm<FieldValues>()
+
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        const toastId = toast.loading('Giriş yapılırken bekleyin');
         signIn('credentials', {
             ...data,
             redirect: false
@@ -30,11 +31,11 @@ const LoginClient:React.FC<LoginClientProps> = ({currentUser}) => {
             if (callback?.ok) {
                 router.push('/cart');
                 router.refresh();
-                toast.success('Giriş Yapıldı')
+                toast.success('Giriş Yapıldı', {id:toastId});
             }
 
             if (callback?.error) {
-                toast.error(callback.error)
+                toast.error(callback.error, {id:toastId})
             }
         });
     }

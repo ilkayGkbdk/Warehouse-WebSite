@@ -23,13 +23,14 @@ const Products:React.FC<ProductsProps> = async ({category}) => {
     return (
         <div>
             <Header text='Tüm Depolar' center bold/>
-            <div className='flex items-center flex-wrap gap-3 md:my-10 mx-3 md:mx-10'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 my-3 md:my-10 mx-3 md:mx-10'>
                 {
                     products.map(product => (
-                        <ProductCard product={product} key={product.id} />
+                        <ProductCard product={product} key={product.id}/>
                     ))
                 }
             </div>
+
         </div>
     );
 }

@@ -1,12 +1,17 @@
 "use client"
 
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Product} from "@prisma/client";
 import {Button, Paper} from "@mui/material";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import toast from "react-hot-toast";
 import axios from "axios";
 import {useRouter} from "next/navigation";
+
+const calculateDynamicWidth = (totalColumns: number) => {
+    const screenWidth = window.innerWidth;
+    return Math.max(screenWidth / totalColumns, 100);
+};
 
 interface ManageClientProps {
     products: Product[]
@@ -27,6 +32,22 @@ const ManageClient:React.FC<ManageClientProps> = ({products}) => {
             });
     }, []);
 
+    const [dynamicWidth, setDynamicWidth] = useState(150);
+
+    useEffect(() => {
+        const updateWidth = () => {
+            const calculatedWidth = calculateDynamicWidth(10); // Example: 8 columns
+            setDynamicWidth(calculatedWidth);
+        };
+
+        window.addEventListener("resize", updateWidth);
+        updateWidth();
+
+        return () => {
+            window.removeEventListener("resize", updateWidth);
+        };
+    }, []);
+
     let rows: any = [];
     if (products) {
         rows = products.map((product) => {
@@ -34,6 +55,7 @@ const ManageClient:React.FC<ManageClientProps> = ({products}) => {
                 id: product.id,
                 name: product.name,
                 price: product.price,
+                palletCount: product.palletCount,
                 category: product.category,
                 brand: product.brand,
                 inStock: product.inStock,
@@ -43,14 +65,15 @@ const ManageClient:React.FC<ManageClientProps> = ({products}) => {
     }
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 150 },
-        { field: 'name', headerName: 'Name', width: 150 },
-        { field: 'price', headerName: 'Price', width: 100 },
-        { field: 'category', headerName: 'Category', width: 100 },
-        { field: 'brand', headerName: 'Brand', width: 100 },
+        { field: 'id', headerName: 'ID', width: dynamicWidth },
+        { field: 'name', headerName: 'Name', width: dynamicWidth },
+        { field: 'price', headerName: 'Price', width: dynamicWidth },
+        { field: 'palletCount', headerName: 'Pallet Count', width: dynamicWidth },
+        { field: 'category', headerName: 'Category', width: dynamicWidth },
+        { field: 'brand', headerName: 'Brand', width: dynamicWidth },
         { field: 'inStock',
             headerName: 'inStock',
-            width: 100,
+            width: dynamicWidth,
             renderCell: (params) => {
                 return (
                     <div>
@@ -60,11 +83,13 @@ const ManageClient:React.FC<ManageClientProps> = ({products}) => {
             }
         },
         { field: 'actions',
-            headerName: 'Aciton',
-            width: 100,
+            headerName: 'Action',
+            headerAlign: 'center',
+            align: 'center',
+            width: dynamicWidth,
             renderCell: (params) => {
                 return (
-                    <Button className='text-red-500' onClick={() => handleDelete(params.row.id)}>
+                    <Button size='large' color='warning' onClick={() => handleDelete(params.row.id)}>
                         SİL
                     </Button>
                 )
@@ -74,14 +99,13 @@ const ManageClient:React.FC<ManageClientProps> = ({products}) => {
 
     return (
         <div>
-            <Paper sx={{ height: 400, width: '100%' }}>
+            <Paper sx={{ height: '100%', width: '100%' }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     initialState={{ pagination: { paginationModel: { page: 0, pageSize: 5 } }}}
                     pageSizeOptions={[5, 10]}
-                    checkboxSelection
-                    sx={{ border: 0 }}
+                    sx={{ border: 1 }}
                 />
             </Paper>
         </div>

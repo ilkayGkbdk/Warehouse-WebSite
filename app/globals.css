@@ -13,20 +13,20 @@
 /* Çubuğun rengini ve yüksekliğini değiştirin */
 #nprogress .bar {
     background: #ff4500; /* Turuncu renk */
-    height: 4px; /* Çubuğun yüksekliği */
+    height: 5px; /* Çubuğun yüksekliği */
 }
 
 /* Spinner'ın rengini ve boyutunu değiştirin */
 #nprogress .spinner {
-    top: 10px; /* Konumunu yukarı taşır */
-    right: 10px; /* Sağ tarafa taşır */
+    top: 10px;
+    right: 10px;
 }
 
 #nprogress .spinner-icon {
     border-top-color: #ff4500; /* Turuncu dönen çizgi */
     border-left-color: #ff4500;
-    width: 30px; /* Spinner boyutu */
-    height: 30px;
+    width: 50px; /* Spinner boyutu */
+    height: 50px;
 }
 
 /* Çubuğun başlangıç ve bitiş animasyonları */

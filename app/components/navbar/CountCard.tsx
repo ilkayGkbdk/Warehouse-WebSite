@@ -4,6 +4,7 @@ import { FaWarehouse } from "react-icons/fa6";
 import useCart from "@/hooks/useCart";
 import {useRouter} from "next/navigation";
 import useLoading from "@/hooks/useLoading";
+import axios from "axios";
 
 const CountCard = () => {
 
@@ -14,11 +15,12 @@ const CountCard = () => {
     const handleNavigation = async () => {
         try {
             startLoading();
-            router.push(`/cart`);
+            await axios.post('/cart').then(() => {
+                router.push(`/cart`);
+                stopLoading();
+            });
         } catch (error) {
             console.error("Yönlendirme hatası:", error);
-        } finally {
-            stopLoading();
         }
     }
 

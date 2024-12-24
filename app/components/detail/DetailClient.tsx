@@ -78,7 +78,7 @@ const DetailClient = ({product}: {product: any}) => {
                                     <div className='text-red-500 font-bold'>Tükenmiş</div>
                             }
                         </div>
-                        <div className='text-customGreen text-opacity-110 text-xl md:text-2xl'>{product?.price} ₺</div>
+                        <div className='text-customGreen text-opacity-110 text-xl md:text-2xl'>{product?.price}$</div>
                         {
                             product?.inStock ?
                                 <>
@@ -96,7 +96,6 @@ const DetailClient = ({product}: {product: any}) => {
                                 <>
                                     <Button text='Stokta Yok' disabled onClick={() => {}}/>
                                 </>
-
                         }
                     </div>
                 </div>

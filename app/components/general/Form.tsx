@@ -11,6 +11,7 @@ import Button from "@/app/components/general/Button";
 import axios from "axios";
 import toast from "react-hot-toast";
 import {useRouter} from "next/navigation";
+import {categories} from "@/utils/Categories";
 
 const Form = () => {
 
@@ -19,6 +20,7 @@ const Form = () => {
     const { register,
         handleSubmit,
         setValue, watch,
+        reset,
         formState: { errors }
     } = useForm<FieldValues>({
         defaultValues: {
@@ -26,6 +28,7 @@ const Form = () => {
             description: "",
             brand: "",
             price: "",
+            palletCount: "",
             category: "",
             image: "",
             inStock: false
@@ -33,6 +36,7 @@ const Form = () => {
     });
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         let image: string | undefined = "";
+        const description: string | undefined = categories.find(cat => cat.category === data.category)?.description;
 
         if (data.category === "small") {
             image = process.env.NEXT_PUBLIC_SMALL_WR_IMG;
@@ -47,13 +51,16 @@ const Form = () => {
             image = process.env.NEXT_PUBLIC_XLARGE_WR_IMG;
         }
 
-        const newData = {...data, image: image};
+        const newData = {...data, image: image, description: description};
+        const toastId = toast.loading('Ürün eklenirken bekleyin');
         axios.post('/api/product', newData).then(() => {
-            toast.success('Ürün ekleme başarılı');
+            toast.success('Ürün ekleme başarılı', { id: toastId });
+            reset();
             router.refresh();
         })
             .catch((error) => {
-                toast.error(error)
+                toast.error('Ürün ekleme başarısız', { id: toastId });
+                console.error('Hata: ', error);
             });
 
     };
@@ -78,11 +85,9 @@ const Form = () => {
         <div>
             <Header text='Ürün Oluştur' center/>
             <Input id='name' type='text' register={register} errors={errors} placeholder='İsim' required/>
-            <Input id='description' type='text' register={register} errors={errors} placeholder='Açıklama' required/>
             <Input id='brand' type='text' register={register} errors={errors} placeholder='Marka' required/>
             <Input id='price' type='number' register={register} errors={errors} placeholder='Fiyat' required/>
-            <Input id='palletCount' type='number' register={register} errors={errors} placeholder='Palet Sayısı'
-                   required/>
+            <Input id='palletCount' type='number' register={register} errors={errors} placeholder='Palet Sayısı' required/>
             <Checkbox id='inStock' register={register} label='Ürün stokta mevcut mu?'/>
             <Header text='Kategori' />
             <div className='flex flex-wrap gap-3'>

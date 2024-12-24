@@ -1,7 +1,6 @@
 import React from 'react';
 import {getCurrentUser} from "@/app/actions/getCurrentUser";
 import WarningText from "@/app/components/general/WarningText";
-import AuthContainer from "@/app/components/containers/AuthContainer";
 import ManageClient from "@/app/components/admin/ManageClient";
 import getProducts from "@/app/actions/getProducts";
 

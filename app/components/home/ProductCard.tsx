@@ -6,6 +6,7 @@ import Image from "next/image";
 import textClip from "@/utils/TextClip";
 import {Rating} from "@mui/material";
 import useLoading from "@/hooks/useLoading";
+import axios from "axios";
 
 interface ProductCardProps {
     product: any
@@ -20,11 +21,12 @@ const ProductCard:React.FC<ProductCardProps> = ({product}) => {
     const handleNavigation = async () => {
         try {
             startLoading();
-            router.push(`/products/${product.id}`);
+            await axios.post(`/products/${product.id}`).then(() => {
+                router.push(`/products/${product.id}`);
+                stopLoading();
+            });
         } catch (error) {
             console.error("Yönlendirme hatası:", error);
-        } finally {
-            stopLoading();
         }
     }
 
